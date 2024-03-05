@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <link href="/assets/main.css" rel="stylesheet" />
+    <link href="/assets/waxen.css" rel="stylesheet" />
+    <link href="https://rsms.me/inter/inter.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <!-- Allow any inheriting page to set it's own title -->
+    <title>{% block title %}{{ title }}{% endblock %}</title>
+
+    <!-- htmx from the unpkg CDN - your mileage may vary -->
+    <script src="https://unpkg.com/htmx.org@1.9.2"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.6/dist/cdn.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.0/marked.min.js" integrity="sha512-tjg8I2d6Fi0OBGz1csmr7RfI4uupYaCfL/RqhVRTS42RMGwfBsjwBGmhzhI+e2dPmyew8cFkoxnVkGvADDLvbg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script type="module" src="/assets/main.js"></script>
+    <script type="module" src="/assets/js/md.js"></script>
+
+    <!-- Allow any inheriting page to extend head with additional assets -->
+    {% block head %}{% endblock %}
+  </head>
+  <body>
+    <div class="min-h-screen flex bg-amber-50">
+      <div
+        class="relative flex flex-col bg-clip-border rounded-xl text-gray-700 w-48 max-w-72 p-4"
+      >
+        <div class="mb-2 p-4">
+          <h5
+            class="block antialiased tracking-normal font-sans text-xl font-semibold leading-snug text-gray-900"
+          >
+            Icarus
+          </h5>
+        </div>
+        <nav
+          class="flex flex-col gap-1 max-w-14 p-2 font-sans text-base font-normal text-gray-700"
+        >
+          {% for cat in categories %}
+          <div
+            role="button"
+            tabindex="0"
+            class="flex items-center w-fit p-3 rounded-lg text-start leading-tight transition-all hover:bg-blue-50 hover:bg-opacity-80 focus:bg-blue-50 focus:bg-opacity-80 active:bg-gray-50 active:bg-opacity-80 hover:text-blue-900 0 outline-none"
+            hx-get="/api/content/md/{{ cat }}"
+            hx-target="#page-content"
+          >
+            {{ cat }}
+          </div>
+          {% endfor %}
+        </nav>
+              </div>
+
+      <main
+        class="flex-1 min-w-0 overflow-auto bg-zinc-50 px-2 sm:mx-16 lg:mx-48 mt-8 rounded-lg shadow-lg shadow-blue-gray-900/5"
+      >
+        <div id="content m-6 items-center">
+          <!-- Inheriting pages will have their content rendered here, similar to app root in React, Angular, etc. -->
+          {% block content %}{% endblock %}
+        </div>
+      </main>
+    </div>
+  </body>
+
+
+</html>
