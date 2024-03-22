@@ -2,7 +2,6 @@ use std::io;
 
 use askama::Template;
 use axum::{
-    extract::Path,
     http::StatusCode,
     response::{Html, IntoResponse, Response},
     routing::get,
@@ -12,6 +11,7 @@ use tower_http::services::ServeDir;
 use tracing::info;
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 
+mod api;
 mod docs;
 
 #[tokio::main]
@@ -27,26 +27,18 @@ async fn main() -> anyhow::Result<()> {
     info!("initializing router...");
     let assets_path = std::env::current_dir()?;
 
-    let api_router = Router::new()
-        .route("/hello", get(hello_api))
-        .route("/content/md/:name", get(docs::md_api));
-
     let router = Router::new()
-        .nest("/api", api_router)
+        .nest("/api", api::router())
         .route("/", get(index))
         .nest_service(
             "/assets",
             ServeDir::new(format!("{}/assets", assets_path.to_str().unwrap())),
         );
 
-    info!("router initialized, now listening on port 3000");
     let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await.unwrap();
+    info!("router initialized, now listening on port 3000");
     axum::serve(listener, router).await?;
     Ok(())
-}
-
-async fn hello_api() -> &'static str {
-    "Hello!"
 }
 
 async fn index() -> impl IntoResponse {
@@ -54,29 +46,43 @@ async fn index() -> impl IntoResponse {
     HtmlTemplate(template)
 }
 
+#[derive(Debug, PartialEq, Eq, PartialOrd, Ord)]
+pub enum CategoryType {
+    Doc,
+    OtherHtml,
+}
+
+#[derive(Debug, PartialEq, Eq, PartialOrd, Ord)]
+pub struct Category {
+    pub name: String,
+    pub cat_type: CategoryType,
+}
+
+impl Category {
+    pub fn new_doc(name: &'static str) -> Self {
+        Self {
+            name: name.to_string(),
+            cat_type: CategoryType::Doc,
+        }
+    }
+    pub fn new_other_html(name: &'static str) -> Self {
+        Self {
+            name: name.to_string(),
+            cat_type: CategoryType::OtherHtml,
+        }
+    }
+}
+
 #[derive(Template)]
 #[template(path = "index.html")]
 struct IndexTemplate {
-    categories: Vec<String>,
     page_content: String,
 }
 impl IndexTemplate {
     pub fn new() -> io::Result<Self> {
-        let mut cats = Vec::new();
-        for entry in std::fs::read_dir(format!(
-            "{}/docs",
-            std::env::current_dir()?.to_str().unwrap()
-        ))? {
-            let path = entry?.path();
-            if path.is_dir() {
-                cats.push(path.file_name().unwrap().to_string_lossy().to_string());
-            }
-        }
-
         Ok(Self {
-            categories: cats,
             page_content: String::from_utf8(std::fs::read(format!(
-                "{}/docs/home/index.md",
+                "{}/docs/welcome.md",
                 std::env::current_dir().unwrap().to_str().unwrap()
             ))?)
             .unwrap(),

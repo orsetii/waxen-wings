@@ -19,44 +19,110 @@
     {% block head %}{% endblock %}
   </head>
   <body>
-    <div class="min-h-screen flex bg-amber-50">
-      <div
-        class="relative flex flex-col bg-clip-border rounded-xl text-gray-700 w-48 max-w-72 p-4"
-      >
-        <div class="mb-2 p-4">
-          <h5
-            class="block antialiased tracking-normal font-sans text-xl font-semibold leading-snug text-gray-900"
-          >
-            Icarus
-          </h5>
-        </div>
-        <nav
-          class="flex flex-col gap-1 max-w-14 p-2 font-sans text-base font-normal text-gray-700"
-        >
-          {% for cat in categories %}
-          <div
-            role="button"
-            tabindex="0"
-            class="flex items-center w-fit p-3 rounded-lg text-start leading-tight transition-all hover:bg-blue-50 hover:bg-opacity-80 focus:bg-blue-50 focus:bg-opacity-80 active:bg-gray-50 active:bg-opacity-80 hover:text-blue-900 0 outline-none"
-            hx-get="/api/content/md/{{ cat }}"
-            hx-target="#page-content"
-          >
-            {{ cat }}
-          </div>
-          {% endfor %}
-        </nav>
-              </div>
-
-      <main
-        class="flex-1 min-w-0 overflow-auto bg-zinc-50 px-2 sm:mx-16 lg:mx-48 mt-8 rounded-lg shadow-lg shadow-blue-gray-900/5"
-      >
-        <div id="content m-6 items-center">
-          <!-- Inheriting pages will have their content rendered here, similar to app root in React, Angular, etc. -->
-          {% block content %}{% endblock %}
-        </div>
-      </main>
+    <div class="navbar bg-base-100">
+  <div class="navbar-start">
+    <div class="dropdown">
+      <div tabindex="0" role="button" class="btn btn-ghost lg:hidden">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" /></svg>
+      </div>
+      <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+   <li>
+        <details>
+          <summary>thoughts</summary>
+          <ul class="p-2">
+            <li><a>philosophy</a></li>
+            <li><a>poetry</a></li>
+            <li><a>misc.</a></li>
+          </ul>
+        </details>
+      </li>
+      <li>
+        <details>
+          <summary>lyrical</summary>
+          <ul class="p-2">
+            <li><a>Submenu 1</a></li>
+            <li><a>Submenu 2</a></li>
+          </ul>
+        </details>
+      </li>
+      <li>
+        <details>
+          <summary>icarus</summary>
+          <ul class="p-2">
+            <li><a>docs</a></li>
+            <li><a>Submenu 2</a></li>
+          </ul>
+        </details>
+      </li>
+    </ul>
     </div>
-  </body>
+    <a class="btn btn-ghost text-xl">Icarus</a>
+  </div>
+  <div class="navbar-center hidden lg:flex">
+    <ul class="menu menu-horizontal px-1">
+      <li>
+        <details>
+          <summary>thoughts</summary>
+          <ul class="p-2">
+            <li><a>philosophy</a></li>
+            <li><a>poetry</a></li>
+            <li><a>social</a></li>
+            <li><a>misc.</a></li>
+          </ul>
+        </details>
+      </li>
+      <li>
+        <details>
+          <summary>notes</summary>
+          <ul class="p-2">
+      <li>
+        <details>
+          <summary>theology</summary>
+          <ul class="p-2">
+            <li><a>islam</a></li>
+            <li><a>christianity</a></li>
+            <li><a>other</a></li>
+          </ul>
+        </details>
+      </li>
+
+      <li>
+        <details>
+          <summary>history</summary>
+          <ul class="p-2">
+            <li><a>europe</a></li>
+            <li><a>britain</a></li>
+            <li><a>other</a></li>
+          </ul>
+        </details>
+      </li>
+            <li><a>art</a></li>
+          </ul>
+        </details>
+      </li>
+      <li>
+        <details>
+          <summary>icarus</summary>
+          <ul class="p-2">
+            <li><a>docs</a></li>
+            <li><a>mechanical notes</a></li>
+          </ul>
+        </details>
+      </li>
+    </ul>
+  </div>
+  <div class="navbar-end mr-8">
+    <div class="tooltip tooltip-bottom" data-tip="No issues">
+    <button class="btn btn-circle btn-success btn-sm"></button>
+  </div>
+  </div>
+</div>
+    <div class="min-h-screen flex">
+      <div id="page-content" class="w-full container flex flex-wrap place-items-center">
+          {% block content %}{% endblock %}
+      </div>
+    </div>
+</body>
 
 
 </html>

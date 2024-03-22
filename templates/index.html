@@ -5,10 +5,12 @@
 
 {% block content %}
 
-<div class="m-8">
+<div class="hero min-h-screen">
+  <div class="hero-content text-center">
+    <div class="max-w-md">
+      {% include "components/clock.html" %}
 
-<article id="page-content" class="prose fade-me-out min-w-full overflow-auto break-keep">
-</article>
-
+    </div>
+  </div>
 </div>
 {% endblock %}

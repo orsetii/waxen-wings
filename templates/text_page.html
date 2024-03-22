@@ -1,0 +1,14 @@
+<!-- prettier-ignore -->
+
+{% block content %}
+      <main class="flex-1 min-w-0 overflow-auto bg-zinc-50 px-2 sm:mx-16 lg:mx-48 mt-8 rounded-lg shadow-lg shadow-blue-gray-900/5">
+        <div id="content m-6 items-center">
+          <div class="m-8">
+            <article id="article-text" class="prose fade-me-out min-w-full overflow-auto break-keep">
+              ARTICLE_START
+              {{ md_text }}
+              ARTICLE_END
+            </article>
+        </div>
+      </main>
+{% endblock %}

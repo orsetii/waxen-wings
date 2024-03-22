@@ -1,0 +1,30 @@
+<div>
+<span class="countdown font-mono text-2xl">
+  <span id="clock-hours" style="--value:10;"></span>:
+  <span id="clock-mins" style="--value:24;"></span>:
+  <span id="clock-secs" style="--value:40;"></span>
+</span>
+
+</div>
+
+
+
+<script>
+function currentTime() {
+  let date = new Date(); 
+  let hh = date.getHours();
+  let mm = date.getMinutes();
+  let ss = date.getSeconds();
+  let session = "AM";
+   hh = (hh < 10) ? "0" + hh : hh;
+   mm = (mm < 10) ? "0" + mm : mm;
+   ss = (ss < 10) ? "0" + ss : ss;
+    
+  document.getElementById("clock-hours").style.setProperty('--value', hh);
+  document.getElementById("clock-mins").style = `--value:${mm};`; 
+  document.getElementById("clock-secs").style = `--value:${ss};`; 
+  let t = setTimeout(function(){ currentTime() }, 1000);
+}
+currentTime();
+
+</script>
